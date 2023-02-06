@@ -1,6 +1,11 @@
 # Data-structures
 Contains all data-structures that are used by the FlexMill-project
 
+# Table of contents
+* [JSON-Data](#JSON-Data)
+* [SQL-Data](#SQL-Data)
+
+
 ## JSON-Data
 Add a robot:
 ```json
@@ -498,3 +503,148 @@ Tool-life-cycle:
 
 
 ## SQL-Data
+
+### Structure of KPI_DATA
+
+-- Server-Version: 10.3.34-MariaDB-0ubuntu0.20.04.1
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Datenbank: `flexmill`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `KPI_DATA`
+--
+
+CREATE TABLE `KPI_DATA` (
+  `id` bigint(20) UNSIGNED NOT NULL COMMENT 'Index',
+  `date` date DEFAULT NULL COMMENT 'The date of the calculated KPIs',
+  `availability` float DEFAULT NULL COMMENT 'Percentage, 0-100, ',
+  `performance` float DEFAULT NULL,
+  `quality` float DEFAULT NULL,
+  `ooe` float DEFAULT NULL,
+  `machine_tool_uptime` int(11) DEFAULT NULL COMMENT 'Uptime in seconds',
+  `machine_tool_downtime` int(11) DEFAULT NULL COMMENT 'Downtime in seconds',
+  `seconds_today` int(11) DEFAULT NULL COMMENT 'Amount of seconds on this day',
+  `total_parts_count` int(11) DEFAULT NULL COMMENT 'Total number of parts for this day',
+  `good_parts_count` int(11) DEFAULT NULL COMMENT 'Good parts for this day',
+  `gpc_mismatch` varchar(32) DEFAULT NULL COMMENT 'Shows if good_part_count is not matching total_parts_count',
+  `ideal_cycle_time` float DEFAULT NULL COMMENT 'Stores the ideal cycle time, that ist calculated manually',
+  `calculated_cycle_time` float DEFAULT NULL COMMENT 'Stores tha cycle time that is calculated baset on the production-data',
+  `workpiece_id` varchar(64) DEFAULT NULL COMMENT 'Id of the workpiece the data is sent for',
+  `batch` varchar(32) DEFAULT NULL COMMENT 'Name of the batch the workpiece belongs to',
+  `machining_centre` int(11) DEFAULT NULL COMMENT 'Identifier of the machining centre'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Contains KPIs per day';
+
+--
+-- Indizes der exportierten Tabellen
+--
+
+--
+-- Indizes für die Tabelle `KPI_DATA`
+--
+ALTER TABLE `KPI_DATA`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `machining_centre + date` (`machining_centre`,`date`);
+
+--
+-- AUTO_INCREMENT für exportierte Tabellen
+--
+
+--
+-- AUTO_INCREMENT für Tabelle `KPI_DATA`
+--
+ALTER TABLE `KPI_DATA`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Index';
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+
+### Structure of KPI_DATA_RAW
+
+-- Server-Version: 10.3.34-MariaDB-0ubuntu0.20.04.1
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Datenbank: `flexmill`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `KPI_DATA_RAW`
+--
+
+CREATE TABLE `KPI_DATA_RAW` (
+  `id` bigint(20) UNSIGNED NOT NULL COMMENT 'Index',
+  `availability` float DEFAULT NULL COMMENT 'Percentage, 0-100, ',
+  `performance` float DEFAULT NULL,
+  `quality` float DEFAULT NULL,
+  `ooe` float DEFAULT NULL,
+  `workpiece_id` varchar(64) DEFAULT NULL COMMENT 'Id of the workpiece the data is sent for',
+  `batch` varchar(32) DEFAULT NULL COMMENT 'Name of the batch the workpiece belongs to',
+  `good_parts_count` int(10) UNSIGNED DEFAULT NULL COMMENT 'Current amount of good parts',
+  `good_parts_date_start` date DEFAULT NULL,
+  `good_parts_date_end` date DEFAULT NULL,
+  `ideal_cycle_time` float UNSIGNED DEFAULT NULL COMMENT 'Ideal cycle time in seconds',
+  `machining_centre` int(11) DEFAULT NULL COMMENT 'Identifier of the machining centre',
+  `machining_date_start` date DEFAULT NULL,
+  `machining_date_end` date DEFAULT NULL,
+  `machining_time_start` time DEFAULT NULL COMMENT 'The time the machining started',
+  `machining_time_end` time DEFAULT NULL COMMENT 'The time, the machining ended'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Contains machining data that is needed to generate KPIs';
+
+--
+-- Indizes der exportierten Tabellen
+--
+
+--
+-- Indizes für die Tabelle `KPI_DATA_RAW`
+--
+ALTER TABLE `KPI_DATA_RAW`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `machining_date_start + machining_centre + machining_time_start` (`machining_date_start`,`machining_centre`,`machining_time_start`) USING BTREE;
+
+--
+-- AUTO_INCREMENT für exportierte Tabellen
+--
+
+--
+-- AUTO_INCREMENT für Tabelle `KPI_DATA_RAW`
+--
+ALTER TABLE `KPI_DATA_RAW`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Index';
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
