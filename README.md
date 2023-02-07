@@ -160,6 +160,46 @@ The entries in tools and components are shown to the user in the interface. Thes
 }
 ```
 
+Machining-Centre-Data:
+```json
+[
+	{
+		"id": "100357",
+		"type": "MachiningData",
+		"Batch": {
+			"type": "Text",
+			"value": "D65847"},
+		"MachiningCentre": {
+			"type": "Int",
+			"value": 1044},
+		"IdealCycleTime": {
+			"type": "Second",
+			"value": 104.51612903225806},
+		"MachiningDateStart": {
+			"type": "Date",
+			"value": "2022-11-11"},
+		"MachiningTimeStart": {
+			"type": "Time", 
+			"value": "21:28:47"}, 
+		"MachiningDateEnd": {
+			"type": "Date", 
+			"value": "2022-11-11"},
+		"MachiningTimeEnd": {
+			"type": "Time", 
+			"value": "21:30:46"},
+		"GoodPartsCount": {
+			"type": "Int", 
+			"value": "0"},
+		"GoodPartsDateStart": {
+			"type": "Date",
+			"value": "2022-11-10"},
+		"GoodPartsDateEnd": {
+			"type": "Date", 
+			"value": "2022-11-10"}
+	}
+]
+```
+
 Tool-life-cycle:
 ```json
 [
